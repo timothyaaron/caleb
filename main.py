@@ -35,12 +35,12 @@ while home == 0:
 
   if Start in Signin:
       print("Please enter a username...")
-      new_username = input()
+      new_username = input().lower()
       while Pass == 0:
 
         if os.path.isfile(rReplace + "\\" + new_username + ".txt") == True:
             print("Username is already taken, Please enter a different username...")
-            new_username = input()
+            new_username = input().lower()
 
         else:
             print("Are you sure you want your username to be " + new_username + "? (Yes or No)")
@@ -93,10 +93,11 @@ while home == 0:
             user_data_from_file = json.loads(data)
             user_data_from_file = json.loads(user_data_from_file)
 
+            if Username in user_data_from_file.keys():
 
-            if Password == user_data_from_file[Username]:
-                Pass = 1
-                home = 1
+              if Password == user_data_from_file[Username]:
+                  Pass = 1
+                  home = 1
 
 
 
@@ -219,9 +220,15 @@ while Pass == 0:
         else:
             print(recipient + " is not in your saved data. Would you like to create a new key for " + recipient +"? (Yes or No)")
             Check = input().lower()
-            if Check == Check_yes or Check == "":
+            if Check in Check_yes or Check == "":
                 print("Please enter " + recipient + "'s ID code.")
-                Seed = input()
+                Pass = 0
+                while Pass == 0:
+                  Seed = input()
+                  if Seed == "":
+                    print("Please entera vaild ID for" + recipient)
+                  else:
+                     Pass = 1
                 user_cipher_data_from_file[recipient] = Seed
 
                 user_cipher_data_from_file_json_format = json.dumps(user_cipher_data_from_file)
