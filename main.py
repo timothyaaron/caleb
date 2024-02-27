@@ -10,7 +10,6 @@ home = 0
 Pass = 0
 New_account = 0
 Check_yes = ["yes", "y"]
-characters = ("a","b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "|", "[", "]", "{", "}", ";", ":", "'", ",", ".", "<", ">", "/", "?", " ", '"', "\\")
 alphabet = "abcdefghijklmnopqrstuvwxyz1234567890 -_=+[{]}|;:'\"/?.>,<!@#$%^&*()`~\\"
 
 while Pass == 0:
@@ -169,7 +168,7 @@ while Pass == 0:
 
     while a > 0:
 
-      book += characters[random.randint(0,len(characters)-1)]
+      book += alphabet[random.randint(0,len(alphabet)-1)]
       a -= 1
 
 
@@ -249,7 +248,7 @@ while Pass == 0:
 
     while a > 0:
 
-      book += characters[random.randint(0,len(characters)-1)]
+      book += alphabet[random.randint(0,len(alphabet)-1)]
       a -= 1
 
     open_code = {}
