@@ -40,6 +40,12 @@ options = [
 ]
 selection = choose_option(message, options)
 
+# temp
+start = options[selection][0]
+login, signin = options
+
+
+# unmodified below here
 while HOME == 0:
     PASS_ = 0
 
