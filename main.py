@@ -17,25 +17,27 @@ CHECK_YES = ["yes", "y"]
 
 
 # sign in/up
-def login_or_create():
+def choose_option(msg, opts):
     while True:
-        print("To log onto Ciphernet, please enter 1 to login.")
-        print("If you do not have a account, please enter 2 to create an account.")
+        print(msg)
         user_input = input().lower()
 
-        options = [
-            ("1", "login", "log in"),
-            ("2", "signin", "sign in", "create an account"),
-        ]
+        if user_input in ("q", "quit", "exit"):
+            exit()
 
-        for i, valid_inputs in enumerate(options):
+        for i, valid_inputs in enumerate(opts):
             if user_input in valid_inputs:
-                return i
+                return i  # careful, your first match will be 0 (which is falsey)
 
         print(f"'{user_input}' not a valid option.\n")
 
 
-user_input = login_or_create()
+message = "Welcome to Ciphernet. Please choose an option: 1) login, 2) signup."
+options = [
+    ["1", "login", "log in", "signin", "sign in"],
+    ["2", "signup", "sign up", "create an account"],
+]
+selection = choose_option(message, options)
 
 while HOME == 0:
     PASS_ = 0
