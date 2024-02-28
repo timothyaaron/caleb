@@ -20,11 +20,12 @@ CHECK_YES = ["yes", "y"]
 def choose_option(msg, opts):
     while True:
         print(msg)
-        user_input = input().lower()
+        option_msg = [f"{o[0]}) {o[1]}" for o in opts]
+        print(f"Please choose an option: {', '.join(option_msg)}, q) quit")
 
+        user_input = input().lower()
         if user_input in ("q", "quit", "exit"):
             exit()
-
         for i, valid_inputs in enumerate(opts):
             if user_input in valid_inputs:
                 return i  # careful, your first match will be 0 (which is falsey)
@@ -32,7 +33,7 @@ def choose_option(msg, opts):
         print(f"'{user_input}' not a valid option.\n")
 
 
-message = "Welcome to Ciphernet. Please choose an option: 1) login, 2) signup."
+message = "Welcome to Ciphernet."
 options = [
     ["1", "login", "log in", "signin", "sign in"],
     ["2", "signup", "sign up", "create an account"],
