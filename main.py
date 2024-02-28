@@ -143,8 +143,8 @@ while PASS_ == 0:
             print("Please enter the name of the person you would like to encode for...")
             recipient = input().lower()
             if recipient in user_cipher_data_from_file.keys():
-                Seed = user_cipher_data_from_file[recipient]
-                print(str(recipient) + "'s ID code is " + str(Seed))
+                seed = user_cipher_data_from_file[recipient]
+                print(str(recipient) + "'s ID code is " + str(seed))
                 PASS_ = 1
 
             else:
@@ -156,9 +156,9 @@ while PASS_ == 0:
                 )
                 Check = input().lower()
                 if Check in CHECK_YES or Check == "":
-                    Seed = SYS_RAND.randint(0, 1000000000)
-                    user_cipher_data_from_file[recipient] = Seed
-                    print(str(recipient) + "'s ID code is " + str(Seed))
+                    seed = SYS_RAND.randint(0, 1000000000)
+                    user_cipher_data_from_file[recipient] = seed
+                    print(str(recipient) + "'s ID code is " + str(seed))
 
                     user_cipher_data_from_file_json_format = json.dumps(
                         user_cipher_data_from_file
@@ -170,7 +170,7 @@ while PASS_ == 0:
                     PASS_ = 0
 
         PASS_ = 0
-        random.seed(Seed)
+        random.seed(seed)
 
         i = 1
         book = ""
@@ -225,7 +225,7 @@ while PASS_ == 0:
             )
             recipient = input().lower()
             if recipient in user_cipher_data_from_file.keys():
-                Seed = user_cipher_data_from_file[recipient]
+                seed = user_cipher_data_from_file[recipient]
                 PASS_ = 1
 
             else:
