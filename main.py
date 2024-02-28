@@ -15,23 +15,27 @@ PASS_ = 0
 NEW_ACCOUNT = 0
 CHECK_YES = ["yes", "y"]
 
+
 # sign in/up
-while PASS_ == 0:
-    print("To log onto Ciphernet, please enter 1 to login.")
-    print("If you do not have a account, please enter 2 to create an account.")
-    start = input().lower()
+def login_or_create():
+    while True:
+        print("To log onto Ciphernet, please enter 1 to login.")
+        print("If you do not have a account, please enter 2 to create an account.")
+        user_input = input().lower()
 
-    login = ["1", 1, "login", "log in"]
-    signin = ["2", 2, "signin", "sign in", "create an account"]
+        options = [
+            ("1", "login", "log in"),
+            ("2", "signin", "sign in", "create an account"),
+        ]
 
-    if start in login:
-        PASS_ = 1
-    elif start in signin:
-        PASS_ = 1
+        for i, valid_inputs in enumerate(options):
+            if user_input in valid_inputs:
+                return i
 
-    else:
-        print("Invalid input")
+        print(f"'{user_input}' not a valid option.\n")
 
+
+user_input = login_or_create()
 
 while HOME == 0:
     PASS_ = 0
