@@ -15,24 +15,37 @@ PASS_ = 0
 NEW_ACCOUNT = 0
 CHECK_YES = ["yes", "y"]
 
+
 # sign in/up
-while PASS_ == 0:
-    print("To log onto Ciphernet, please enter 1 to login.")
-    print("If you do not have a account, please enter 2 to create an account.")
-    start = input().lower()
+def choose_option(msg, opts):
+    while True:
+        print(msg)
+        option_msg = [f"{o[0]}) {o[1]}" for o in opts]
+        print(f"Please choose an option: {', '.join(option_msg)}, q) quit")
 
-    login = ["1", 1, "login", "log in"]
-    signin = ["2", 2, "signin", "sign in", "create an account"]
+        user_input = input().lower()
+        if user_input in ("q", "quit", "exit"):
+            exit()
+        for i, valid_inputs in enumerate(opts):
+            if user_input in valid_inputs:
+                return i  # careful, your first match will be 0 (which is falsey)
 
-    if start in login:
-        PASS_ = 1
-    elif start in signin:
-        PASS_ = 1
-
-    else:
-        print("Invalid input")
+        print(f"'{user_input}' not a valid option.\n")
 
 
+message = "Welcome to Ciphernet."
+options = [
+    ["1", "login", "log in", "signin", "sign in"],
+    ["2", "signup", "sign up", "create an account"],
+]
+selection = choose_option(message, options)
+
+# temp
+start = options[selection][0]
+login, signin = options
+
+
+# unmodified below here
 while HOME == 0:
     PASS_ = 0
 
