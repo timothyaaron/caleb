@@ -1,37 +1,39 @@
 import random
 import os
-import json
+import json 
 
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz1234567890 -_=+[{]}|;:'\"/?.>,<!@#$%^&*()`~\\"
-OPTS = {
+OPTIONS = {
+
     "yes": ["yes", "y", ""],
     "login": ["1", 1, "login", "log in"],
     "sign_up": ["2", 2, "sign_up", "sign up", "create an account"],
+    "encipher_message_input": ["1", 1, "one", "encode", "encode a message"],
+    "decipher_message_input": ["2", 2, "two", "decode", "decode a massage"],
+    "log_out": ["3", 3, "three", "log out"],
+    "exit_program_input": ["4", 4, "four", "exit"]
+
 }
 FILE_LOCATION = r"C:\Users\cloni\Documents\VS Code\Ciphernet Users"
+SYS_RAND = random.SystemRandom()
 
-log_in_or_sign_up_var = 0
-sys_rand = random.SystemRandom()
-current_user = ""
 user_data = {}
-home = pass_ = New_account = 0
-home_accept_paramiters_for_1 = ["1", 1, "one", "encode", "encode a message"]
-home_accept_paramiters_for_2 = ["2", 2, "two", "decode", "decode a massage"]
-home_accept_paramiters_for_3 = ["3", 3, "three", "exit"]
 home_screen_input = ""
 
 
-def should_signup_first():
+def should_sign_up():
     while True:
         print("To log onto Ciphernet, please enter 1")
         print("If you do not have a account, please enter 2")
         user_input = input().lower()
 
-        if user_input in OPTS["login"]:
+        if user_input in OPTIONS["login"]:
             return False
-        elif user_input in OPTS["sign_up"]:
+
+        elif user_input in OPTIONS["sign_up"]:
             return True
+
         else:
             print("Invalid input")
 
@@ -40,35 +42,39 @@ def sign_up():
     while True:
         print("Please enter a username...")
         new_username = input()
-        path = f"{FILE_LOCATION}/{new_username}/{new_username}'s_data"
+        path = f"{FILE_LOCATION}{os.sep}{new_username}{os.sep}{new_username}'s_data"
 
-        if os.path.isfile(path):
-            print("username is already taken")
+        if os.path.isfile(f"{path}{os.sep}{new_username}'s_data.txt"):
+            print("Username is already taken")
+
+    
         else:
             print(f"Are you sure you want your username to be {new_username}? (Yes or No)")
-            confirm_username = input()
-            if confirm_username in OPTS["yes"]:
+            confirm_usernameb = input()
+            if confirm_usernameb in OPTIONS["yes"]:
                 print(f"Your username is {new_username}")
                 break
+
+    
 
     while True:
           print("Please enter a password...")
           new_password = input()
           print(f"Your pasword is {new_password}")
-
           print(f"Are you sure you want you password to be {new_password}? (Yes or No)")
-          confirm_password = input().lower()
-          if confirm_password in OPTS["yes"]:
+          check_password = input().lower()
+          if check_password in OPTIONS["yes"]:
             user_data[new_username] = new_password
-            user_data_double_quotes = json.dumps(user_data)
-
+            user_data_double_quotes = json.dumps(user_data)            
+            
             try:
                 os.makedirs(path)
-                with open(f"{path}\\{new_username}'s_data.txt", "w+") as file:
-                    json.dump(user_data_double_quotes, file)
             except OSError as error:
-                print(error)
-
+              print(error)
+            
+            with open(f"{path}{os.sep}{new_username}'s_data.txt", "w+") as file:
+              json.dump(user_data_double_quotes, file)
+            
             print("Please log in to your new account.")
             break
 
@@ -77,75 +83,82 @@ def log_in():
     while True:
         print("Enter username...")
         username = input()
-
         print("Enter Password...")
         password = input()
+        global path
+        path = f"{FILE_LOCATION}{os.sep}{username}{os.sep}{username}'s_data"
 
-        path = f"{FILE_LOCATION}\\{username}\\{username}'s_data"
-
-        if os.path.isfile(f"{path}\\{username}'s_data.txt"):
-            with open(f"{path}\\{username}'s_data.txt", "r") as f:
-                user_data = json.loads(json.loads(f.read()))
-
-            if password == user_data.get(username):
-                    return username
-
-            print("Please enter a valid username and password.")
-        else:
+        if os.path.isfile(f"{path}{os.sep}{username}'s_data.txt") is False:
             print("Please enter a valid username and password...")
+        else:
+            with open(f"{path}{os.sep}{username}'s_data.txt") as f: 
+                data = f.read()
+            user_data_from_file = json.loads(data)
+            user_data_from_file = json.loads(user_data_from_file)
+            try:
+                if username in user_data_from_file.keys():
+                    if password in user_data_from_file[username]:
+                        return username
+                print("Please enter a valid username and password")
+            except:
+                print("Please enter a valid username and password.")
 
 
-def home_screen():
-    pass_ = 0
+def home_screen():      
 
-    while pass_ == 0:
+    while True:
         print("If you would like to encode a message enter 1.")
         print("If you would like to decode a message enter 2.")
-        print("If you would like to exit enter 3.")
-        global home_screen_input
+        print("if you would like to log out enter 3.")
+        print("If you would like to exit enter 4.")
+        
         home_screen_input = input().lower()
-        pass_ = 1
-
+        return home_screen_input
+    
 
 def encipher(username):
-        if os.path.isfile(path + "\\" + username + "'s_enciphering_data.txt") == False:
+        encipher_path = f"{path}{os.sep}{username}'s_enciphering_data.txt"
+        if os.path.isfile(encipher_path) == False:
+            open(encipher_path, "w").close()
+            
+        #user_cipher_data_from_file = json.loads(data)
+        #user_cipher_data_from_file = json.loads(user_cipher_data_from_file)
+                
 
-            Cipher_file = open(path + "\\" + username + "'s_enciphering_data.txt", "w")
-            Cipher_file.close()
 
-        if os.path.getsize(path + "\\" + username + "'s_enciphering_data.txt") > 0:
-            with open(path + "\\" + username + "'s_enciphering_data.txt", "r") as f:
+
+        if os.path.getsize(encipher_path) > 0:
+            with open(encipher_path, "r") as f: 
                 data = f.read()
             user_cipher_data_from_file = json.loads(data)
             user_cipher_data_from_file = json.loads(user_cipher_data_from_file)
         else:
             user_cipher_data_from_file = {}
 
-        pass_ = 0
-        while pass_ == 0:
+        
+        while True:
             print("Please enter the name of the person you would like to encode for...")
             recipient = input().lower()
             if recipient in user_cipher_data_from_file.keys():
                 seed_ = user_cipher_data_from_file[recipient]
-                print(str(recipient) + "'s ID code is " + str(seed_))
-                pass_ = 1
+                print(f"{recipient}'s ID code is {seed_}")
+                break
 
             else:
                 print(recipient + " is not in your saved data. Would you like to create a new key for " + recipient +"? (Yes or No)")
-                Check = input().lower()
-                if Check in CHECK_YES or Check == "":
-                    seed_ = sys_rand.randint(0,1000000000)
+                User_input = input().lower()
+                if User_input in OPTIONS["yes"]:
+                    seed_ = SYS_RAND.randint(0,1000000000)
                     user_cipher_data_from_file[recipient] = seed_
-                    print(str(recipient) + "'s ID code is " + str(seed_))
+                    print(f"{recipient}'s ID code is {seed_}")
 
                     user_cipher_data_from_file_json_format = json.dumps(user_cipher_data_from_file)
-                    with open(path + "\\" + username + "'s_enciphering_data.txt", "w") as file:
+                    with open(encipher_path, "w") as file: 
                         json.dump(user_cipher_data_from_file_json_format, file)
-                    pass_ = 1
-                else:
-                    pass_ = 0
+                    break
 
-        pass_ = 0
+
+
         random.seed(seed_)
 
 
@@ -175,65 +188,61 @@ def encipher(username):
         # For each leter in the message it finds the letter in the open code and then randomly picks one of the number associated with it.
         for letter in secret.lower():
             if letter in ALPHABET:
-                encode += str(sys_rand.choice(open_code[letter])) + " "
+                encode += str(SYS_RAND.choice(open_code[letter])) + " "
             else:
                 encode += letter
 
         print("Your ciphered message is...")
         print (encode)
         with open(path + "_enciphered_message.txt", "w+") as file:
-              json.dump(encode, file)
+            file.write(encode)
 
 
 def decipher(username):
-        if os.path.isfile(path + "\\" + username + "'s_deciphering_data.txt") == False:
-            Cipher_file = open(path + "\\" + username + "'s_deciphering_data.txt", "w")
+        decipher_path = f"{path}{os.sep}{username}'s_deciphering_data.txt"
+        if os.path.isfile(decipher_path) == False:
+            Cipher_file = open(decipher_path, "w")
             Cipher_file.close()
 
-        if os.path.getsize(path + "\\" + username + "'s_deciphering_data.txt") > 0:
-            with open(path + "\\" + username + "'s_deciphering_data.txt", "r") as f:
-                data = f.read()
-            user_cipher_data_from_file = json.loads(data)
-            user_cipher_data_from_file = json.loads(user_cipher_data_from_file)
+        if os.path.getsize(decipher_path) > 0:
+            with open(decipher_path, "r") as f: 
+                user_cipher_data_from_file = json.loads(json.loads(f.read()))
+
         else:
             user_cipher_data_from_file = {}
 
-        pass_ = 0
-        while pass_ == 0:
+
+        while True:
             print("Please enter the name of the person you would like to decode a message from...")
             recipient = input().lower()
             if recipient in user_cipher_data_from_file.keys():
                 seed_ = user_cipher_data_from_file[recipient]
-                pass_ = 1
-
+                break
+                
             else:
                 print(recipient + " is not in your saved data. Would you like to create a new key for " + recipient +"? (Yes or No)")
                 Check = input().lower()
-                if Check in CHECK_YES or Check == "":
+
+                if Check in OPTIONS["yes"] or Check == "":
                     print("Please enter " + recipient + "'s ID code.")
-                    pass_ = 0
-                    while pass_ == 0:
+
+                    while True:
                         seed_ = input()
                         res = seed_.isdigit()
-
+                    
                         if res == True:
-                            pass_ = 1
                             seed_ = int(seed_)
+                            break
                         else:
                             print("Please enter a valid ID for " + recipient)
                     user_cipher_data_from_file[recipient] = seed_
 
                     user_cipher_data_from_file_json_format = json.dumps(user_cipher_data_from_file)
-                    with open(path + "\\" + username + "'s_deciphering_data.txt", "w") as file:
+                    with open(decipher_path, "w") as file: 
                         json.dump(user_cipher_data_from_file_json_format, file)
-                    pass_ = 1
-                else:
-                    pass_ = 0
+                    break
 
 
-
-
-        pass_ = 0
         random.seed(int(seed_))
 
 
@@ -267,32 +276,37 @@ def decipher(username):
             except:
                 decoded += " " if x == "" else x
         print(decoded)
-        with open(FILE_LOCATION + "\\" + username + "\\" + username + "_deciphered_message.txt", "w+") as file:
-            json.dump(decoded, file)
+        with open(f"{FILE_LOCATION}{os.sep}{username}{os.sep}{username}_deciphered_message.txt", "w+") as file:
+            file.write(decoded)
 
 
 def run_program():
-    # signin
-    if should_signup_first():
+    if should_sign_up():
         sign_up()
-
+    
     username = log_in()
 
-    # cipher
-    while home_screen_input not in home_accept_paramiters_for_3:
-        home_screen()
-        if home_screen_input in home_accept_paramiters_for_1:
+    while True:
+        
+        home_screen_input = home_screen()
+
+        if home_screen_input in OPTIONS["encipher_message_input"]:
             encipher(username)
 
-        elif home_screen_input in home_accept_paramiters_for_2:
+        elif home_screen_input in OPTIONS["decipher_message_input"]:
             decipher(username)
 
-        elif home_screen_input in home_accept_paramiters_for_3:
+        elif home_screen_input in OPTIONS["log_out"]:
+            if should_sign_up():
+                sign_up()
+            username = log_in()
+
+        if home_screen_input in OPTIONS["exit_program_input"]:
             print("Exiting Program")
+            break
 
         else:
             print("Invalid input")
 
 
-if __name__ == "__main__":
-    run_program()
+run_program()
